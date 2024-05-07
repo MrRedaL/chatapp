@@ -1,8 +1,11 @@
-FROM maven:3.8.5-openjdk-17 AS build
-COPY . .
-RUN mvn clean package -DskipTests
+# Utilisation de l'image Java officielle
+FROM openjdk:11-jre-slim
 
-FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
-EXPOSE 8080
-ENTRYPOINT {"java","-java","demo.jar"}
+# Répertoire de travail dans le conteneur
+WORKDIR /app
+
+# Copier le jar de l'application Spring Boot dans le conteneur
+COPY target/votre_application.jar /app/app.jar
+
+# Commande pour démarrer l'application Spring Boot au lancement du conteneur
+CMD ["java", "-jar", "app.jar"]
